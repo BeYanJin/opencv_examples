@@ -15,8 +15,8 @@ img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
 # img = cv2.cvtColor(img, cv2.COLOR_HSV2BGR)
 # 天蓝色
 img[0][0] = [0xFE, 0xE3, 0x71];
-print '图像序列（BGR格式, 三维数组）：', img, '\n'
-print '(高, 宽, 每个像素的通道数)：', img.shape
+print('图像序列（BGR格式, 三维数组）：', img, '\n')
+print('(高, 宽, 每个像素的通道数)：', img.shape)
 
 # 写出图像文件
 cv2.imwrite('img/MyPic.png', img)

@@ -8,7 +8,7 @@ import os
 # randomByteArray = bytearray(np.random.randint(0, 256, 120000))
 randomByteArray = bytearray(os.urandom(120000))
 flatNumpyArray = np.array(randomByteArray)
-print 'flatNumpyArray:', flatNumpyArray, '\tsize:', flatNumpyArray.size
+print('flatNumpyArray:', flatNumpyArray, '\tsize:', flatNumpyArray.size)
 
 # 把数组转化为400×300, 单通道的灰度图 和 200×200, 三通道的BRG图
 grayImage = flatNumpyArray.reshape(300, 400)

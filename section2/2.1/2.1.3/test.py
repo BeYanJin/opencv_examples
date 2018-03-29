@@ -4,10 +4,10 @@ import numpy as np
 
 img = cv2.imread('img/MyPic.png')
 # 获取像素坐标(150, 120)的B值
-print '像素坐标(150, 120)的B值:', img.item(150, 120, 0)
+print('像素坐标(150, 120)的B值:', img.item(150, 120, 0))
 # 设置像素坐标(150, 120)的B值0
 img.itemset((150, 120, 0), 255)
-print '像素坐标(150, 120)的新B值:', img.item(150, 120, 0)
+print('像素坐标(150, 120)的新B值:', img.item(150, 120, 0))
 
 # 用索引解决高代价的低效像素操作问题
 newImgB0 = np.array(img)
@@ -32,6 +32,6 @@ img[115:230, 115:230] = my_roi2
 cv2.imwrite('img/new_input_1.png', img)
 
 # 获取图像三个属性
-print 'img.shape:', img.shape
-print 'img.size:', img.size
-print 'img.dtype:', img.dtype
+print('img.shape:', img.shape)
+print('img.size:', img.size)
+print('img.dtype:', img.dtype)
