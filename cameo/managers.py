@@ -85,14 +85,18 @@ class CaptureManager(object):
        # 在窗口中显示帧, 如果真有的话
        if self.previewWindowManager is not None:
            if self.shouldMirrorPreview:
-               mirroredFrame = np.fliplr(self.frame).copy()
+               mirroredFrame = np.fliplr(self._frame).copy()
                self.previewWindowManager.show(mirroredFrame)
            else:
                self.previewWindowManager.show(self._frame)
 
        # 输出为图像文件, 如果真有的话
        if self.isWritingImage:
-           cv2.imwrite(self._imageFilename, self._frame)
+           if self.shouldMirrorPreview:
+               mirroredFrame = np.fliplr(self._frame).copy()
+               cv2.imwrite(self._imageFilename, mirroredFrame)
+           else:
+               cv2.imwrite(self._imageFilename, self._frame)
            self._imageFilename = None
 
        # 输出为视频文件, 如果真有的话
@@ -134,7 +138,11 @@ class CaptureManager(object):
                     int(self._capture.get(cv2.CAP_PROP_FRAME_HEIGHT)))
             self._videoWriter = cv2.VideoWriter(self._videoFilename, self._videoEncoding, fps, size)
 
-        self._videoWriter.write(self._frame)
+        if self.shouldMirrorPreview:
+            mirroredFrame = np.fliplr(self._frame).copy()
+            self._videoWriter.write(mirroredFrame)
+        else:
+            self._videoWriter.write(self._frame)
             
 
 
