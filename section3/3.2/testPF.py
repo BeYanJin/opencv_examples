@@ -20,7 +20,7 @@ kernel_5x5 = np.array([[-1, -1, -1, -1, -1],
                        [-1,  1,  2,  1, -1],
                        [-1, -1, -1, -1, -1]])
 
-img = cv2.imread("img/color3_small.jpg", 0)
+img = cv2.imread("img/3.png", 0)
 cv2.imshow("origin", img)
 
 # 经过 kernel_3x3 滤波处理（卷积和）后得到的图像
