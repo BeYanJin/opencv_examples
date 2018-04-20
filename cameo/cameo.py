@@ -1,3 +1,4 @@
+# -*-coding:utf-8-*-
 import cv2
 import numpy as np
 from managers import WindowManager, CaptureManager
@@ -14,13 +15,12 @@ class Cameo(object):
         self._windowManager.createWindow()
         while self._windowManager.isWindowCreated:
             self._captureManager.enterFrame()
+            # 获取帧副本
             frame = self._captureManager.frame
 
-            # TODO: 过滤处理帧（图像）
-            frameGray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            self._filter.strokeEdgesWhiteBg(frame, frameGray)
-            frameGray = np.fliplr(frameGray).copy()
-            cv2.imshow('frameGray', frameGray)
+            # TODO: 过滤处理帧
+            # 处理帧的副本请使用 frame 变量; 若欲处理摄像头源帧, 请处理 self._captureManager.frame
+            self._captureManager.frame = self._filter.strokeEdgesWhiteBg(frame)
 
             self._captureManager.exitFrame()
             self._windowManager.processEvents()

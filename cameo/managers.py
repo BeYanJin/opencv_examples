@@ -49,6 +49,11 @@ class CaptureManager(object):
             _, self._frame = self._capture.retrieve()
         return self._frame
 
+    @frame.setter
+    def frame(self, value):
+        if value is not None:
+            self._frame = value
+
     @property
     def isWritingImage(self):
         return self._imageFilename is not None

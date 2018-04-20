@@ -21,15 +21,18 @@ cv2.imwrite('img/FindEdgesFilter_Laplacian_BGR.png', img)
 
 # 将源图像背景变为黑色, 并描绘出白色的边缘
 img = cv2.imread('img/screenshot.png')
-imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-FindEdgesFilter().strokeEdgesBlackBg(img, imgGray)
-cv2.imwrite('img/FindEdgesFilter_Laplacian_Black.png', imgGray)
+img = FindEdgesFilter().strokeEdgesBlackBg(img)
+cv2.imwrite('img/FindEdgesFilter_Laplacian_Black.png', img)
 
 # 将源图像背景变为白色, 并描绘出黑色的边缘
 img = cv2.imread('img/screenshot.png')
-imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-FindEdgesFilter().strokeEdgesWhiteBg(img, imgGray)
-cv2.imwrite('img/FindEdgesFilter_Laplacian_White.png', imgGray)
+img = FindEdgesFilter().strokeEdgesWhiteBg(img)
+cv2.imwrite('img/FindEdgesFilter_Laplacian_White.png', img)
+
+# Canny函数边缘检测
+img = cv2.imread('img/screenshot.png')
+img = FindEdgesFilter().canny(img, 50, 150)
+cv2.imwrite('img/FindEdgesFilter_canny.png', img)
 
 
 """ 模糊滤波器 """

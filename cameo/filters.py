@@ -65,31 +65,41 @@ class FindEdgesFilter(VConvolutionFilter):
         # 通道合并
         cv2.merge(channels, dst)
 
-    def strokeEdgesBlackBg(self, src, dst, blurKsize = 7, edgeKsize = 5):
+    def strokeEdgesBlackBg(self, src, blurKsize = 7, edgeKsize = 5):
         """ 将源图像背景变为黑色, 并描绘出白色的边缘 """
 
         # 若要关闭模糊效果, 可以将blurKsize的值设为3以下
         if blurKsize >= 3:
             blurredSrc = cv2.medianBlur(src, blurKsize)
-            graySrc = cv2.cvtColor(blurredSrc, cv2.COLOR_BGR2GRAY)
+            if src.shape[2] == 3:
+                # 若源图像有三个通道, 则转化为灰度图
+                graySrc = cv2.cvtColor(blurredSrc, cv2.COLOR_BGR2GRAY)
+            elif src.shape == 1:
+                graySrc = blurredSrc
         else:
-            graySrc = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
+            if src.shape[2] == 3:
+                graySrc = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
 
         # 边缘检测函数, 它会产生明显的边缘线条, 灰度图像更是如此
         cv2.Laplacian(graySrc, cv2.CV_8U, graySrc, ksize=edgeKsize)
 
-        # 将 graySrc 作为输出图像 dst
-        np.copyto(dst, np.array(graySrc, dtype = np.uint8))
+        # 将 graySrc 作为输出图像
+        return graySrc
 
-    def strokeEdgesWhiteBg(self, src, dst, blurKsize = 7, edgeKsize = 5):
+    def strokeEdgesWhiteBg(self, src, blurKsize = 7, edgeKsize = 5):
         """ 将源图像背景变为白色, 并描绘出黑色的边缘 """
 
         # 若要关闭模糊效果, 可以将blurKsize的值设为3以下
         if blurKsize >= 3:
             blurredSrc = cv2.medianBlur(src, blurKsize)
-            graySrc = cv2.cvtColor(blurredSrc, cv2.COLOR_BGR2GRAY)
+            if src.shape[2] == 3:
+                # 若源图像有三个通道, 则转化为灰度图
+                graySrc = cv2.cvtColor(blurredSrc, cv2.COLOR_BGR2GRAY)
+            elif src.shape == 1:
+                graySrc = blurredSrc
         else:
-            graySrc = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
+            if src.shape[2] == 3:
+                graySrc = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
 
         # 边缘检测函数, 它会产生明显的边缘线条, 灰度图像更是如此
         cv2.Laplacian(graySrc, cv2.CV_8U, graySrc, ksize=edgeKsize)
@@ -97,10 +107,11 @@ class FindEdgesFilter(VConvolutionFilter):
         # 归一化系数, 将原来的 黑色背景、白色边缘图像 转换为 黑色边缘、白色背景图像
         normalizedInverseAlpha = (1.0 / 255) * (255 - graySrc)
 
-        # 将 normalizedInverseAlpha 作为输出图像 dst
-        cv2.cvtColor(src, cv2.COLOR_BGR2GRAY, dst)
-        np.copyto(dst, np.array(normalizedInverseAlpha * 255, dtype = np.uint8))
+        # 将 normalizedInverseAlpha 作为输出图像
+        return np.array(normalizedInverseAlpha * 255, dtype = np.uint8)
 
+    def canny(self, src, threshold1, threshold2, L2gradient = False):
+        return cv2.Canny(src, threshold1, threshold2, L2gradient = L2gradient)
 
 """ 模糊滤波器
  @extend VConvolutionFilter
